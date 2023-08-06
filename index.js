@@ -11,8 +11,8 @@ import { fileURLToPath } from "url";
 import path from "path";
 import { error, log } from "console";
 import {register}    from "./controller/auth.js";
-import router from "./routes/auth.js";
-
+import authRoutes from "./routes/auth.js";
+// import userRoutes from "./routes/users.js";
 
 // CONFIGRATIONS
 
@@ -48,7 +48,9 @@ const upload = multer({ storage})
 app.post("/auth/register" , upload.single("picturePath"), register)
 
 // Routes
-app.use("/auth" , router)
+app.use("/auth", authRoutes);
+// app.use("/users", userRoutes);
+
 
 
 
