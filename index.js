@@ -10,7 +10,8 @@ import morgan from "morgan";
 import { fileURLToPath } from "url";
 import path from "path";
 import { error, log } from "console";
-import {register}    from "./controller/auth.js"
+import {register}    from "./controller/auth.js";
+import router from "./routes/auth.js";
 
 
 // CONFIGRATIONS
@@ -46,11 +47,14 @@ const upload = multer({ storage})
 
 app.post("/auth/register" , upload.single("picturePath"), register)
 
+// Routes
+app.use("/auth" , router)
+
 
 
 // MONGOOSE SETUP
 
-const PORT = process.env.PORT || 6001;
+const PORT = 3001;
 
 mongoose.connect("mongodb+srv://drashti:123qweasd@cluster0.omwgtuu.mongodb.net/?retryWrites=true&w=majority" , {
     useNewUrlParser : true,
