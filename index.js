@@ -32,7 +32,8 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 
-app.use((req, res, next) => {
+app.use((req, res, next) =>
+{
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -41,34 +42,36 @@ app.use((req, res, next) => {
 
 /* FILE STORAGE */
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: function (req, file, cb)
+  {
     cb(null, "public/assets");
   },
-  filename: function (req, file, cb) {
+  filename: function (req, file, cb)
+  {
     cb(null, file.originalname);
   },
 });
 const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
-app.get('/test',(req,res) => res.send('hello world'))
+app.get('/test', (req, res) => res.send('hello world'))
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
-app.use("/users", userRoutes);
+   app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
 /* MONGOOSE SETUP */
-const PORT = 3001;
 mongoose
-  .connect("mongodb+srv://drashti:123qweasd@cluster0.omwgtuu.mongodb.net/?retryWrites=true&w=majority", {
+  .connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  .then(() =>
+  {
+    app.listen(process.env.PORT, () => console.log(`Server Port: ${process.env.PORT}`));
 
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
